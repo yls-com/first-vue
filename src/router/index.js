@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router' // 关键：替换为 createWebHashHistory
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
@@ -7,7 +7,7 @@ import Device from '../views/Device.vue'
 const routes = [
     {
         path: '/',
-        redirect: '/login' // 默认跳登录页
+        redirect: '/login' // 默认跳登录页（Hash模式下会变成 #/login）
     },
     {
         path: '/login',
@@ -35,11 +35,11 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(), // 关键：改用Hash模式（带#的路由）
     routes
 })
 
-// 路由守卫：未登录拦截
+// 路由守卫：未登录拦截（逻辑不变，正常使用）
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
         const token = localStorage.getItem('token')
