@@ -46,6 +46,17 @@
             {{ loading ? '登录中...' : '登 录' }}
           </el-button>
         </el-form-item>
+        
+        <el-form-item>
+          <el-button 
+            type="success" 
+            @click="handleRegister" 
+            size="large"
+            class="register-button"
+            plain>
+            注 册
+          </el-button>
+        </el-form-item>
       </el-form>
       
       <div class="login-footer">
@@ -129,6 +140,10 @@ const handleLogin = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const handleRegister = () => {
+  router.push('/register')
 }
 </script>
 
@@ -217,6 +232,22 @@ const handleLogin = async () => {
 
 .login-button:active {
   transform: translateY(0);
+}
+
+.register-button {
+  width: 100%;
+  border-radius: 6px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
 }
 
 .login-footer {
