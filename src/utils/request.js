@@ -3,7 +3,7 @@ import { ElMessage } from 'element-plus'
 
 // 创建axios实例
 const request = axios.create({
-    baseURL: '/api', // 使用代理前缀
+    baseURL: "https://first-springboot.onrender.com", // 使用代理前缀
     timeout: 5000, // 请求超时时间
 })
 
