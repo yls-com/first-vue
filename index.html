@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/first-vue/favicon.ico">
+    <base href="/first-vue/"> <!-- 新增这行，指定页面根路径 -->
+    <link rel="icon" href="favicon.ico"> <!-- 去掉/first-vue/前缀 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vite App</title>
-    <script type="module" crossorigin src="/first-vue/assets/index-BkYLzHhv.js"></script>
-    <link rel="stylesheet" crossorigin href="/first-vue/assets/index-BIr-Mhhr.css">
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+    <script type="module" crossorigin src="assets/index-BkYLzHhv.js"></script> <!-- 去掉/first-vue/前缀 -->
+    <link rel="stylesheet" crossorigin href="assets/index-BIr-Mhhr.css"> <!-- 去掉/first-vue/前缀 -->
+</head>
+<body>
+<div id="app"></div>
+</body>
 </html>
