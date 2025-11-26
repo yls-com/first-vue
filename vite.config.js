@@ -11,7 +11,7 @@ export default defineConfig({
     proxy: {
       // 你原有的后端接口代理配置（本地开发用，不影响部署）
       '/api': {
-        target: 'http://localhost:8081',  // 本地后端接口地址（开发时用）
+        target: 'http://localhost:8087',  // 本地后端接口地址（开发时用）
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')  // 去掉 /api 前缀
       }
