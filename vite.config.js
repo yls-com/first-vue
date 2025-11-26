@@ -1,19 +1,22 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-export default defineConfig({
-  // 关键添加：配置 GitHub Pages 基础路径（必须和你的 GitHub 仓库名一致）
-  base: '/first-vue/', // 你的仓库名是 first-vue，所以填 /仓库名/
+// 重点：通过 mode 参数判断环境（development=本地开发，production=打包部署）
+export default defineConfig(({ mode }) => {
+  return {
+    // 本地开发用 '/'（无 /first-vue），部署时用 '/first-vue/'（适配 GitHub 仓库名）
+    base: mode === 'development' ? '/' : '/first-vue/',
 
-  plugins: [vue()],
+    plugins: [vue()],
 
-  server: {
-    proxy: {
-      // 你原有的后端接口代理配置（本地开发用，不影响部署）
-      '/api': {
-        target: 'http://localhost:8087',  // 本地后端接口地址（开发时用）
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')  // 去掉 /api 前缀
+    server: {
+      proxy: {
+        // 本地开发的代理配置（仅本地生效，部署后不影响）
+        '/api': {
+          target: 'http://localhost:8087',  // 本地后端地址
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')  // 去掉 /api 前缀
+        }
       }
     }
   }
