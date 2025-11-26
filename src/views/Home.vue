@@ -68,6 +68,7 @@ const goToProfile = () => {
 
 // 退出登录
 const handleLogout = () => {
+  localStorage.removeItem('token')
   localStorage.removeItem('userInfo')
   ElMessage.success('已退出登录')
   router.push('/login')

@@ -42,8 +42,8 @@ const router = createRouter({
 // 路由守卫：未登录拦截
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-        const userInfo = localStorage.getItem('userInfo')
-        if (userInfo) {
+        const token = localStorage.getItem('token')
+        if (token) {
             next()
         } else {
             next('/login') // 未登录跳登录页
