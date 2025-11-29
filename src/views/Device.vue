@@ -250,11 +250,11 @@ const resetFilter = () => {
 const fetchDeviceList = async () => {
   loading.value = true
   try {
-    const response = await request.get('/findAllDevices')
+    const response = await request.get('/device/findAllDevices')
     if (response.code === 200) {
       // 过滤掉无效数据，只保留有设备名称的有效记录
       const validDevices = (response.data || []).filter(device => 
-        device && device.name && device.device_id && device.type
+        device && device.name && device.device_id !== undefined && device.type
       )
       
       deviceList.value = validDevices
@@ -290,7 +290,7 @@ const saveAddDevice = async () => {
     formData.append('brightness', addingDevice.value.brightness);
     formData.append('room', addingDevice.value.room);
 
-    const response = await request.post('/addDevice', formData)
+    const response = await request.post('/device/addDevice', formData)
 
     if (response.code === 200) {
       ElMessage.success('设备添加成功')
@@ -331,13 +331,13 @@ const saveEdit = async () => {
     // 将数据转换为表单格式
     const formData = new URLSearchParams();
     formData.append('device_id', editingDevice.value.device_id);
-    formData.append('name', editingDevice.value.name);
-    formData.append('type', editingDevice.value.type);
-    formData.append('status', editingDevice.value.status);
+    formData.append('name', editingDevice.value.name || '');
+    formData.append('type', editingDevice.value.type || '');
+    formData.append('status', editingDevice.value.status || '');
     formData.append('brightness', editingDevice.value.brightness);
-    formData.append('room', editingDevice.value.room);
+    formData.append('room', editingDevice.value.room || '');
 
-    const response = await request.post('/updateDeviceById', formData)
+    const response = await request.post('/device/updateDeviceById', formData)
 
     if (response.code === 200) {
       ElMessage.success('设备更新成功')
@@ -365,7 +365,7 @@ const handleDelete = (device) => {
   ).then(async () => {
     // 调用删除接口
     try {
-      const response = await request.delete(`/deleteDeviceById?device_id=${device.device_id}`)
+      const response = await request.delete(`/device/deleteDeviceById?device_id=${device.device_id}`)
       if (response.code === 200) {
         ElMessage.success('删除成功')
         // 重新获取设备列表
@@ -423,7 +423,7 @@ const saveBatchAddDevices = async () => {
     }
 
     // 发送请求到后端
-    const response = await request.post('/batchAddDevices', devices);
+    const response = await request.post('/device/batchAddDevices', devices);
 
     if (response.code === 200) {
       ElMessage.success('设备批量添加成功');

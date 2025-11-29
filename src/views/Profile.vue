@@ -140,7 +140,7 @@ const loadUserProfile = () => {
 // 更新用户信息
 const updateProfile = async () => {
   try {
-    const response = await request.put('/updateNickname', null, {
+    const response = await request.post('/user/updateNickname', null, {
       params: {
         user_id: profileForm.value.user_id,
         nickname: profileForm.value.nickname
@@ -167,9 +167,14 @@ const updateProfile = async () => {
 
 // 发送验证码
 const sendVerificationCode = async () => {
+  if (!passwordForm.value.email) {
+    ElMessage.error('邮箱地址不能为空')
+    return
+  }
+  
   try {
     // 调用后端发送验证码接口
-    const response = await request.get('/sendEmailCode', {
+    const response = await request.post('/user/sendEmailCode', null, {
       params: {
         email: passwordForm.value.email
       }
@@ -212,7 +217,7 @@ const changePassword = async () => {
     if (valid) {
       try {
         // 验证码校验并执行修改密码
-        const updateResponse = await request.put('/updatePasswordByEmail', null, {
+        const updateResponse = await request.post('/user/updatePasswordByEmail', null, {
           params: {
             email: passwordForm.value.email,
             password: passwordForm.value.newPassword,

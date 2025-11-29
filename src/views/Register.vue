@@ -19,11 +19,21 @@
           </el-input>
         </el-form-item>
 
+        <el-form-item prop="email">
+          <el-input 
+            v-model="registerForm.email" 
+            placeholder="请输入邮箱" 
+            size="large"
+            clearable
+            prefix-icon="Message">
+          </el-input>
+        </el-form-item>
+
         <el-form-item prop="password">
           <el-input 
             v-model="registerForm.password" 
             type="password" 
-            placeholder="请输入密码" 
+            placeholder="请输入密码（至少8位，包含字母和数字）" 
             show-password
             size="large"
             prefix-icon="Lock">
@@ -38,6 +48,26 @@
             show-password
             size="large"
             prefix-icon="Lock">
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="nickname">
+          <el-input 
+            v-model="registerForm.nickname" 
+            placeholder="请输入昵称（可选）" 
+            size="large"
+            clearable
+            prefix-icon="User">
+          </el-input>
+        </el-form-item>
+
+        <el-form-item prop="phone">
+          <el-input 
+            v-model="registerForm.phone" 
+            placeholder="请输入手机号码（可选）" 
+            size="large"
+            clearable
+            prefix-icon="Phone">
           </el-input>
         </el-form-item>
 
@@ -81,18 +111,29 @@ import request from '../utils/request'
 
 const registerForm = ref({
   username: '',
+  email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  nickname: '',
+  phone: ''
 })
 
 const rules = ref({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '用户名长度应在3-20个字符之间', trigger: 'blur' }
+    { min: 1, max: 20, message: '用户名长度应在1-20个字符之间', trigger: 'blur' }
+  ],
+  email: [
+    { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 20, message: '密码长度应在6-20个字符之间', trigger: 'blur' }
+    { 
+      pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+      message: '密码至少8位，必须包含字母和数字',
+      trigger: 'blur'
+    }
   ],
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },
@@ -104,6 +145,13 @@ const rules = ref({
           callback()
         }
       },
+      trigger: 'blur'
+    }
+  ],
+  phone: [
+    { 
+      pattern: /^1[3-9]\d{9}$/,
+      message: '请输入正确的手机号码',
       trigger: 'blur'
     }
   ]
@@ -125,13 +173,12 @@ const handleRegister = async () => {
   loading.value = true
 
   try {
-    const response = await request.post('/register', {
+    const response = await request.post('/user/register', {
       username: registerForm.value.username,
-      password: registerForm.value.password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      password: registerForm.value.password,
+      email: registerForm.value.email,
+      nickname: registerForm.value.nickname || undefined,
+      phone: registerForm.value.phone || undefined
     })
 
     if (response && response.code === 200) {

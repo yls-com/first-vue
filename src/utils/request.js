@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 // 核心：自动区分环境，切换后端地址
-// 开发环境（npm run dev）：用 /api 走 Vite 代理（对应 localhost:8087）
+// 开发环境（npm run dev）：用 /api 走 Vite 代理（对应 localhost:8081）
 // 生产环境（npm run build）：直接请求 Render 后端地址
 const baseURL = import.meta.env.MODE === 'production'
     ? 'https://first-springboot.onrender.com' // 生产环境：Render 后端
@@ -28,7 +28,7 @@ request.interceptors.request.use(
         // 获取并添加Token（登录后才会有，未登录时不添加）
         const token = localStorage.getItem('token')
         if (token) {
-            config.headers['token'] = token
+            config.headers['Authorization'] = token
             console.log(`[${import.meta.env.MODE}] 已添加Token到请求头：`, token)
         } else {
             console.log(`[${import.meta.env.MODE}] 未获取到Token，无需添加（登录/注册接口无需Token）`)
@@ -65,7 +65,7 @@ request.interceptors.response.use(
             // 无响应：网络错误/后端未启动
             const tip = import.meta.env.MODE === 'production'
                 ? '网络错误或服务器未响应，请稍后重试'
-                : '网络错误，请检查本地后端服务（localhost:8087）是否启动';
+                : '网络错误，请检查本地后端服务（localhost:8081）是否启动';
             ElMessage.error(tip)
         } else {
             const status = error.response.status

@@ -109,19 +109,15 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    const response = await request.post('/login', {
+    const response = await request.post('/user/login', {
       username: loginForm.value.username,
       password: loginForm.value.password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
     })
 
     if (response && response.code === 200) {
       ElMessage.success({ message: '登录成功', duration: 1200 })
       localStorage.setItem('token', response.data.token)
-      localStorage.setItem('userInfo', JSON.stringify(response.data.users))
+      localStorage.setItem('userInfo', JSON.stringify(response.data.user))
 
       if (rememberMe.value) {
         localStorage.setItem('savedUsername', loginForm.value.username)

@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
       // 开发环境代理（只在本地dev生效）
       proxy: {
         '/api': {
-          target: 'http://localhost:8087', // 本地后端地址
+          target: 'http://localhost:8081', // 本地后端地址
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }

@@ -22,7 +22,11 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="created_time" label="创建时间" width="200"></el-table-column>
+      <el-table-column prop="created_time" label="创建时间" width="200">
+        <template #default="scope">
+          {{ scope.row.created_time ? new Date(scope.row.created_time).toLocaleString() : '' }}
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -44,7 +48,7 @@ onMounted(() => {
 // 调用后端接口获取所有用户
 const fetchUserList = async () => {
   try {
-    const response = await request.get('/selectAllUser')
+    const response = await request.get('/user/selectAllUser')
     if (response.code === 200) {
       userList.value = response.data || []
     } else {
